@@ -12,6 +12,22 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+class ModelWithScaler:
+    """Wrapper that stores a scaler and KNN model for persistence."""
+
+    def __init__(self, scaler, knn):
+        self.scaler = scaler
+        self.knn = knn
+
+    def predict(self, X):
+        X_scaled = self.scaler.transform(X)
+        return self.knn.predict(X_scaled)
+
+    def score(self, X, y):
+        X_scaled = self.scaler.transform(X)
+        return self.knn.score(X_scaled, y)
+
+
 class KNNModelTrainer:
     """Train and save KNN risk model"""
     
@@ -48,20 +64,6 @@ class KNNModelTrainer:
             weights='distance'
         )
         model.fit(X_scaled, y_train)
-        
-        # Create pipeline-like wrapper that includes scaler
-        class ModelWithScaler:
-            def __init__(self, scaler, knn):
-                self.scaler = scaler
-                self.knn = knn
-            
-            def predict(self, X):
-                X_scaled = self.scaler.transform(X)
-                return self.knn.predict(X_scaled)
-            
-            def score(self, X, y):
-                X_scaled = self.scaler.transform(X)
-                return self.knn.score(X_scaled, y)
         
         final_model = ModelWithScaler(scaler, model)
         

@@ -83,6 +83,17 @@ class KNNRiskPredictor:
         Returns:
             Tuple of (risk_label, risk_score)
         """
+        # Normalize legacy/new feature aliases so model artifacts
+        # trained with different naming conventions still work.
+        if 'checkin_delay_days' in features and 'avg_delay_days' not in features:
+            features['avg_delay_days'] = features['checkin_delay_days']
+        if 'feedback_sentiment_score' in features and 'average_sentiment_score' not in features:
+            features['average_sentiment_score'] = features['feedback_sentiment_score']
+        if 'avg_delay_days' in features and 'checkin_delay_days' not in features:
+            features['checkin_delay_days'] = features['avg_delay_days']
+        if 'average_sentiment_score' in features and 'feedback_sentiment_score' not in features:
+            features['feedback_sentiment_score'] = features['average_sentiment_score']
+
         # Validate input
         required_keys = set(self._feature_cols)
         provided_keys = set(features.keys())
