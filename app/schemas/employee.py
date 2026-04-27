@@ -27,7 +27,7 @@ class RiskFeatures(BaseModel):
         }
 
 
-class RiskLabel = Literal["low", "medium", "high"]
+RiskLabel = Literal["low", "medium", "high"]
 
 
 class RiskAnalysisRequest(BaseModel):

@@ -12,7 +12,7 @@ class FeedbackSentimentRequest(BaseModel):
     text: str = Field(..., description="Vietnamese feedback text to analyze")
 
 
-class SentimentLabel = Literal["POSITIVE", "NEUTRAL", "NEGATIVE", "MIXED"]
+SentimentLabel = Literal["POSITIVE", "NEUTRAL", "NEGATIVE", "MIXED"]
 
 
 class SentimentResponse(BaseModel):
